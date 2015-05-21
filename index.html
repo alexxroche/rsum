@@ -134,6 +134,22 @@ window.onload = function(){
   
 var RS = {
     model: {
+        countdown: function (){
+            var cdBar = document.getElementById('cdProgress');
+            if(cdBar){
+                style = window.getComputedStyle(cdBar);
+                //should check if we get a computed [px,em] or %
+                width = Math.floor(style.getPropertyValue('width').substr(0, style.getPropertyValue('width').length -2));
+                if (width <= 0){ cdBar.style.width = 0; return; }
+                width -= width * 0.01; // 10% of the _rest_ of the bar - maybe we should speed up again for the last 10%?
+                cdBar.style.width = width + 'px';
+            console.log(document.getElementById('cdProgress').style.width);
+            //}else{
+            //    console.log('Where is the bar?');
+            }
+            var cd = setTimeout(function(){RS.model.countdown()},100);
+            //var cd = setTimeout(function(){this.countdown()},500);
+        },
         getlength: function (number) {
             return number.toString().length;
         },
@@ -155,7 +171,7 @@ var RS = {
             return int;
         },
         recursive_sum: function(number){
-            console.log('rsuming ' + number);
+            //console.log('rsuming ' + number);
             while( this.getlength(number) > 1){
                 number = (number + '').split('').reduce(function(previousValue, currentValue){  
                   return parseInt(previousValue,10) + parseInt(currentValue,10);  
@@ -172,24 +188,24 @@ var RS = {
                     //console.log('last correct number was ' + RS.model.sum + ' to which we are lengthening to '  + RS.model.digits + ' digits');
                     this.sum = this.nrd(this.digits,this.sum);
                     this.rsum[0] = this.recursive_sum(this.sum);
-                    console.log('next ' + this.sum + ' RS= ' + this.rsum[0]);
+                    //console.log('next ' + this.sum + ' RS= ' + this.rsum[0]);
                   }else{
                     this.sum = this.nrd(this.digits);
-                    this.rsum[0] = rsum(this.sum);
-                    console.log('up to ' + RS.model.sum + ' RS= ' + RS.model.rsum[0]);
+                    this.rsum[0] = this.recursive_sum(this.sum);
+                    //console.log('up to ' + RS.model.sum + ' RS= ' + RS.model.rsum[0]);
                   }
               }else if(RS.model.digits  >=2){
                 RS.model.digits--;
-                console.log('sum was ' + RS.model.sum);
+                //console.log('sum was ' + RS.model.sum);
                 RS.model.sum = Math.floor(RS.model.sum / 10); // remove failed digit
-                    RS.model.rsum[0] = rsum(RS.model.sum);
-                console.log('now sum is ' + RS.model.sum);
-                    console.log('down ' + RS.model.sum + ' RS= ' + RS.model.rsum[0]);
+                    RS.model.rsum[0] = this.recursive_sum(RS.model.sum);
+                //console.log('now sum is ' + RS.model.sum);
+                //    console.log('down ' + RS.model.sum + ' RS= ' + RS.model.rsum[0]);
 
               }else{
                 RS.model.digits=1;
                     //alert('Game over: ' + RS.model.scores );
-                    console.log(guess);
+                    //console.log(guess);
               }
         },
         digits: 1,
@@ -310,6 +326,8 @@ var RS = {
     },
     controller: function(){ 
         RS.model.init();
+        RS.model.countdown();
+        //var cd = setTimeout(function(){RS.model.countdown()},500);
 
         this.pressMyKey = function(key){
             if(key){
@@ -333,8 +351,14 @@ window.addEventListener('keydown', function(e){
     if( ( e.keyCode >= 48 &&e.keyCode<= 57) || ( e.keyCode >= 96 && e.keyCode<= 105) ) {
         guess = String.fromCharCode(e.keyCode);
         RS.model.check(guess);
+        RS.model.log = e.keyCode;
+        m.redraw();
+    }else{
+        RS.model.log = e.keyCode;
         m.redraw();
     }
+    if( String.fromCharCode(e.keyCode) == 'n' || String.fromCharCode(e.keyCode) == 'N'){ window.location.reload(); } 
+    if( e.keyCode == 66 && (String.fromCharCode(e.keyCode) == 'b' || String.fromCharCode(e.keyCode) == 'B')){ history.go(-1); } 
 });
 
 m.module(document.body, RS);
@@ -356,7 +380,7 @@ Loading the rsum game [0], (or if it does not load, there might be an error.)
 <div class="floatl" style="border: 0">
 <span>
 [0] pronounced "awesome game"
-[1] The alexx Conjecture: in base 10 rsum() of a number composed of any digit followed by one or more digit 9 -> 9
+[1] The alexx Conjecture: in base 10 recursive_sum() of a number composed of any digit followed by one or more digit 9 -> 9
 </span>
 <br /><span style="display:none"> If you can read this, you are Shish.</span>
 </div>
