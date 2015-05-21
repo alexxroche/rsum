@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+<!--link href="http://fonts.googleapis.com/css?family=Kavoon&subset=latin,latin-ext" rel="stylesheet" type="text/css" /-->
+<!--script src="//cdnjs.cloudflare.com/ajax/libs/mithril/0.1.13/mithril.min.js"></script-->
+<script src="mithril.min.js"></script>
+  <title>rsum</title>
+ <style>
+    nowrap{ white-space: nowrap; }
+    body{width:50%;padding:25px; margin-left: auto ;
+  margin-right: auto ;text-align:center;}#page{ margin-left: auto ;
+  margin-right: auto ;text-align:center}
+    .floatl{float:left; margin-left: 1em;
+    /*
+    width:5em;
+    */
+    height:250px;border:1px solid #ccc;overflow:auto;}
+    .floatm{position:static;margin-left: 1em;height:3em;border:5px solid #ccc;overflow:auto;}
+    .floatr{top:-200px;float:right;margin-left: 1em;height:250px;border:1px solid #ccc;overflow:auto;}
+    .padtop{ top:5em;}
+    #results{ font-family: "Lucida Console", Monaco, monospace;
+         font-size: 106%;
+        text-weight:1900; 
+        overflow:hidden;
+        padding: -7px 10px -12px 10px; border:0;
+    }
+    /*
+    #guide, #setings { display:none;}
+    */
+    #guide:hover, #settings:hover{ display:block;}
+    #sum{ 
+    overflow:hidden;
+    position:relative;
+    top: 5px;
+    border-radius:20px;
+    -webkit-border-radius:20px;
+    -moz-border-radius:20px;
+    line-height:40px;
+    margin-top:-12px;
+  margin-left: auto ;text-align:center;
+        font-family: "Lucida Console", Monaco, monospace;
+        text-shadow:#C17C3A 0 -1px 0;
+        color:#ed8223;
+        text-weight:bold; 
+       font-size: 150%; 
+        background-color:#C9CACC; 
+        padding: 7px 10px 2px 10px; border:0px solid;
+    }
+    .gareish_button {
+border: 1px solid #00ff00;
+  color: #ff0000;
+  background: #fff000;
+  font-family: verdana;
+  font-size: 1em;
+}
+    .styled-button-1 {
+    background-color:#ed8223;
+    font-family:'Helvetica Neue',sans-serif;
+    font-size:18px;
+    text-shadow:#C17C3A 0 -1px 0;
+    }
+    .styled-button-5 {
+    /* http://www.graemeboy.com/css-buttons */
+    background-color:#ed8223;
+    color:#fff;
+    font-family:'Helvetica Neue',sans-serif;
+    font-size:18px;
+    line-height:20px;
+    border-radius:20px;
+    -webkit-border-radius:20px;
+    -moz-border-radius:20px;
+    border:1;
+    text-shadow:#C17C3A 0 -1px 0;
+    width:25px;
+    height:20px
+}           
+    #menu, #menu-button{ border: 0;}
+    .styled-button-5:hover{ border-style:inset; -webkit-border-radius:20px; -moz-border-radius:20px;}
+
+    #cdProgress { 
+        position:relative;
+        /*
+        border-top:3px solid #000;
+        border-bottom: 3px solid #000; 
+        */
+        background-color:rgba(205,250,255,.75);
+        /* position:absolute; */
+       /* bottom:0; */
+        /* left:0; */
+        width:90%;
+        /* z-index:20; */
+        font-size:15px;
+        left: 20%;
+        height: 17px;
+    }
+    #cdProgressBarContainer {
+        background-color:#494949;
+        text-align: left;
+    }
+    #cdProgressBarContainer, #cdProgressBar{
+        float:left;
+        width:29%;
+        /* height:14px;
+        */
+        position:relative;
+        border-radius:3px
+        -webkit-border-radius:3px;
+        -moz-border-radius:3px;
+    }
+    #cdProgressBar {  
+        background-color:#00ff85;
+        background-color:#9fA500;
+        background-color:#ff8500;
+        background-color:#0085ff;
+        background-color:#0085ff;
+    }
+    #countdown, .countdown{
+        float: left; 
+        position:relitive; top: 100%;bottom: 0;
+        background-color:#ffffff;
+        clear: middle;
+        border-radius:3px
+        -webkit-border-radius:3px;
+        -moz-border-radius:3px;
+    }
+
+    #page {position: relative;}
+    .bold{  text-weight:bold; color:#6C3A39; font-size: 18px; }
+    .valignm{vertical-align: middle; display: inline-block; }
+    </style>
+<script>
+window.onload = function(){
+  
+    function getlength(number) {
+        return number.toString().length;
+    }
+  
+    function getRandomInt(min, max) {
+      //  return Math.floor(Math.random()*(max-min+1)+min);
+      return Math.floor(Math.random()*(max-min+1))+min;
+    }
+
+  function nrd(factor,seq){
+    
+    if ( ! factor ){ factor = 1 };
+    var int = seq || '';
+    //var col = 1;
+    var min = 1;
+    var max= 10;
+    var str = int.toString();
+    var len = str.length;
+    //console.log("factor: " + factor + " length: " + len);   
+                // (int.toString()).length) );
+    //return getRandomInt(min,max) + factor;    
+    console.log(' in fun nrd: adding a digit to ' + int);
+    while( getlength(int) < factor ){
+      
+      //min *= col;
+      //max *= col;
+      //int = ( int + ( getRandomInt(min,max -1) ) );
+      int = ( ( int * 10) + ( getRandomInt(1,9) ) );
+        console.log(' in fun nrd: checking if ' + int + ' is adding a digit to ' + int);
+      //col *= 10;
+      //str = int.toString();
+      //len = str.length;
+    }
+    /*
+    while( getlength(int) >= factor ){
+      int = int.slice(1);
+    }
+    rsum = (int + '').split('').reduce(function(previousValue, currentValue){  
+      return parseInt(previousValue,10) + parseInt(currentValue,10);  
+    });
+    */
+/*
+    var rsum = int;
+    while( getlength(rsum) > 1){
+        rsum = (rsum + '').split('').reduce(function(previousValue, currentValue){  
+          return parseInt(previousValue,10) + parseInt(currentValue,10);  
+        });
+    }
+    RS.model.rsum[0] = rsum;
+    console.log(rsum);
+*/
+    return int;
+  }
+
+  function rsum(number){
+    console.log('rsuming ' + number);
+    while( getlength(number) > 1){
+        number = (number + '').split('').reduce(function(previousValue, currentValue){  
+          return parseInt(previousValue,10) + parseInt(currentValue,10);  
+        });
+    }
+    //RS.model.rsum[0] = number;
+    return number
+  }
+
+/* NTS Migrate the above helpers into RS.model */
+
+  
+//var rsum=[];  
+//var digits = 1; // each round this goes up
+//var sequential = 1;
+var RS = {
+    model: {
+            check: function(guess) { 
+               var map = {a:1,b:2,c:3,d:4,e:5,f:6,g:7,h:8,i:9}; // some numberpads send letters?
+               if( this.rsum[0] == guess || this.rsum[0] == map[guess] ){
+                    this.digits++;
+                      if(this.sequential){
+                        //console.log('last correct number was ' + RS.model.sum + ' to which we are lengthening to '  + RS.model.digits + ' digits');
+                        this.sum = nrd(this.digits,this.sum);
+                        this.rsum[0] = rsum(this.sum);
+                        console.log('next ' + this.sum + ' RS= ' + this.rsum[0]);
+                      }else{
+                        this.sum = nrd(this.digits);
+                        this.rsum[0] = rsum(this.sum);
+                        console.log('up to ' + RS.model.sum + ' RS= ' + RS.model.rsum[0]);
+                      }
+                  }else if(RS.model.digits  >=2){
+                    RS.model.digits--;
+                    console.log('sum was ' + RS.model.sum);
+                    RS.model.sum = Math.floor(RS.model.sum / 10); // remove failed digit
+                        RS.model.rsum[0] = rsum(RS.model.sum);
+                    console.log('now sum is ' + RS.model.sum);
+                        console.log('down ' + RS.model.sum + ' RS= ' + RS.model.rsum[0]);
+
+                  }else{
+                    RS.model.digits=1;
+                        //alert('Game over: ' + RS.model.scores );
+                        console.log(guess);
+                  }
+            },
+            digits: 1,
+            sequential: 1,
+            rsum: [0,0],
+            count: 0,
+            log: '',
+            sum: nrd(this.digits),
+            init: function() {
+                 this.rsum[0] = rsum(this.sum);
+                console.log(' which = ' + this.rsum[0]);
+            },
+        },
+    view: function(ctrl){ 
+            return [ 
+                m('div', {'class':'floatr', 'id':'menu-button'}, [
+                    m('a', {'href':'#'}, [
+                        m('svg', {'width':10, 'heigt':10}, [
+                            m('path', {'d':"M0,1 10,1", 'stroke':"#000", 'stroke-width':"2"}),
+                            m('path', {'d':"M0,5 10,5", 'stroke':"#000", 'stroke-width':"2"}),
+                            m('path', {'d':"M0,9 10,9", 'stroke':"#000", 'stroke-width':"2"}),
+                        ]),
+                    ]),
+                ]),
+                m('div', {'class':"floatr", 'id':"menu-button"}, [
+                    m('a', {'href':'#'}, [
+                        m('svg',  {'width':"10", 'height':"10"})
+                    ]),
+                ]),
+                m('div', {'id':'menu', 'style':'display:none;'}, [
+                    m('a',  {'href':'#'}, 'Guide'),
+                    m('a',  {'href':'#'}, [
+                        m('i', {'class':'fa fa-cog'}, 'Guide'),
+                    ]),
+                ]),
+
+              m('div', {'class':'floatm', 'id':'result'}, [
+                    m('div', {'class':'valignm', 'id':'quiz'}, [
+                        m('span', {}, 'Recursively Sum: '),
+                        m('span', {'id':'sum'}, this.model.sum ),
+                    ]),
+                ]),
+              m('div', {'class':'', 'id':'page'}, [
+                    m('div', {'class':'player1 floatl padtop', 'id':'player1buttons'}, [
+                        m('button[type=button]', {'class':'styled-button-1', 'id':'7p1', onmousedown:function(){ ctrl.pressMyKey('7p1')}}, 7),
+                        m('button[type=button]', {'class':'styled-button-1', 'id':'8p1', onmousedown:function(){ ctrl.pressMyKey('8p1')}}, 8),
+                        m('button[type=button]', {'class':'styled-button-1', 'id':'9p1', onmousedown:function(){ ctrl.pressMyKey('9p1')}}, 9),
+                        m('br', {}),
+                        m('button[type=button]', {'class':'styled-button-1', 'id':'4p1', onmousedown:function(){ ctrl.pressMyKey('4p1')}}, 4),
+                        m('button[type=button]', {'class':'styled-button-1', 'id':'5p1', onmousedown:function(){ ctrl.pressMyKey('5p1')}}, 5),
+                        m('button[type=button]', {'class':'styled-button-1', 'id':'6p1', onmousedown:function(){ ctrl.pressMyKey('6p1')}}, 6),
+                        m('br', {}),
+                        m('button[type=button]', {'class':'styled-button-1', 'id':'1p1', onmousedown:function(){ ctrl.pressMyKey('1p1')}}, 1),
+                        m('button[type=button]', {'class':'styled-button-1', 'id':'2p1', onmousedown:function(){ ctrl.pressMyKey('2p1')}}, 2),
+                        m('button[type=button]', {'class':'styled-button-1', 'id':'3p1', onmousedown:function(){ ctrl.pressMyKey('3p1')}}, 3),
+                        m('span', {'class':'', 'id':'p1score'}, this.model.p1score),
+                    ]),
+                    m('div', {'class':'player2 floatr', 'id':'player2buttons'}, [
+                        m('button[type=button]', {'class':'styled-button-1', 'id':'7p2', onmousedown:function(){ ctrl.pressMyKey('7p2')}}, 7),
+                        m('button[type=button]', {'class':'styled-button-1', 'id':'8p2', onmousedown:function(){ ctrl.pressMyKey('8p2')}}, 8),
+                        m('button[type=button]', {'class':'styled-button-1', 'id':'9p2', onmousedown:function(){ ctrl.pressMyKey('9p2')}}, 9),
+                        m('br', {}),
+                        m('button[type=button]', {'class':'styled-button-1', 'id':'4p2', onmousedown:function(){ ctrl.pressMyKey('4p2')}}, 4),
+                        m('button[type=button]', {'class':'styled-button-1', 'id':'5p2', onmousedown:function(){ ctrl.pressMyKey('5p2')}}, 5),
+                        m('button[type=button]', {'class':'styled-button-1', 'id':'6p2', onmousedown:function(){ ctrl.pressMyKey('6p2')}}, 6),
+                        m('br', {}),
+                        m('button[type=button]', {'class':'styled-button-1', 'id':'1p2', onmousedown:function(){ ctrl.pressMyKey('1p2')}}, 1),
+                        m('button[type=button]', {'class':'styled-button-1', 'id':'2p2', onmousedown:function(){ ctrl.pressMyKey('2p2')}}, 2),
+                        m('button[type=button]', {'class':'styled-button-1', 'id':'3p2', onmousedown:function(){ ctrl.pressMyKey('3p2')}}, 3),
+                        m('span', {'class':'', 'id':'p2score'}, this.model.p2score),
+                    ]),
+                m('div', {'class':'countdown', 'id':'countdown'}, [
+                    m('div', {'class':'', 'id':'cdProgress'}, [
+                        m('span', {'class':'nowrap'}), /* 'Press ' + this.model.sum + ' to start'), */
+                        m('div', {'class':'', 'id':'cdProgressBarContainer'}, [
+                            m('div', {'class':'nowrap', 'id':'cdProgressBar'}),
+                        ]),
+                    ]),
+                    m('div', {'class':'', 'id':'settings'}, [
+                        m('span', {}, ' Players: 1'),
+                        m('input', {'type':'radio', 'name':'players', id:'one_player', 'value':1, 'style':"border-style:inset;", 'checked':"checked"}),
+                        m('span', {}, ' 2 '),
+                        m('input', {'type':'radio', 'name':'players', id:'two_players', 'value':2, 'style':"", }),
+                        m('br', {}),
+                        m('button', {'name':'consecutive', 'style':'border-style:inset;','title':'Sequential'}, 'Consecutive'),
+                        m('span', {}, ' or '),
+                        m('button', {'name':'random', 'style':'','title':'nightmare mode'}, 'Randomish'),
+                        m('br', {}),
+                        m('span', {}, ' Target number: '),
+                        m('button', {'class':'target', 'name':'shared', 'style':'border-style:inset;', 'disabled':'disabled'}, 'shared'),
+                        m('span', {}, ' or '),
+                        m('button', {'class':'target', 'name':'seperate', 'disabled':'disabled'}, 'seperate'),
+                        m('span', {'style':'display:none'}, ' seperate means individual targets for each player'),
+                    ]),
+                ]),
+
+                    m('div', {'id':'guide','style':'width:70%'}, [
+                        m('br', {}),
+                        m('br', {}),
+                        m('br', {}),
+                        m('br', {}),
+                        m('br', {}),
+                        m('span', {'class':'bold'}, 'How to play:'),
+                        m('span', {'class':''}, 'Add the digits until you end up with a 1 digit number, then press that. \
+            With two players you can either use a touch screen or player 2 uses the number-pad and player 1 uses the numbers at the top of the keyboard. \
+            (or you can plug in two USB mice and fight over the pointer :-) \
+            If there is only one player then any input systems are valid. \
+            '),
+                   ]),
+              ]),
+              m('div', {'id':'debug'}, [
+            m('span', {'id':'clicked'}, 'clicked: ' + this.model.count ),
+            m('span', {'id':'log'}, ' log: ' + this.model.log),
+            m('span', {'id':'answers'}, ' rsum: ' + this.model.rsum[0] + ',' + this.model.rsum[1]),
+        ]),
+        ];
+    },
+    controller: function(){ 
+        RS.model.init();
+
+            this.pressMyKey = function(key){
+                    if(key){
+                       var number = key.substr(0, 1); 
+                       var player = key.substr(2, 1); 
+                        RS.model.check(number);
+                        /*
+                        if(document.getElementById('one_player').checked) {
+                            alert('Player ONE ' + player + ' clicked ' + number);
+                        }else if(document.getElementById('two_players').checked) {
+                            alert('Player ' + player + ' clicked ' + number);
+                        }else{
+                            alert('Three\'s a crowd dude!');
+                        }
+                        */
+                    }
+            }
+    }
+};
+/*
+  playerKeys: function() {
+    p1:{48:0, 49:1, 50:2, 51:3;  52:4,  53:5,  54:6,  55:7,  56:8,  57:9};
+    p2:{96:0, 97:1, 98:2, 99:3; 100:4, 101:5, 102:6, 103:7, 104:8, 105:9};
+  };
+  */
+  
+  // we need to collect the keystrokes for the player(s)
+  // and error them (and reset) if they make a mistake
+
+
+window.addEventListener('keydown', function(e){
+  
+    if( ( e.keyCode >= 48 &&e.keyCode<= 57) || ( e.keyCode >= 96 && e.keyCode<= 105) )
+    {
+      RS.model.count++;
+      //var map = {a:1,b:2,c:3,d:4,e:5,f:6,g:7,h:8,i:9};
+      
+      //p1g = String.fromCharCode((96 <= key && key <= 105) ? key-48 : key);
+      guess = String.fromCharCode(e.keyCode);
+      //if( isNaN(guess)){
+      //  RS.model.check(map[guess]);
+      //}else{
+        RS.model.check(guess);
+      //}
+      //RS.model.log = e.keyCode;
+      m.redraw();
+    //}else{
+    //  RS.model.log = e.keyCode;
+    //  m.redraw();
+    }
+});
+
+m.module(document.body, RS);
+
+};
+</script
+</head>
+<body>
+<div id="loading message">
+Loading the rsum game [0], (or if it does not load, there might be an error.)
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<div class="floatl" style="border: 0">
+<span>
+[0] pronounced "awesome game"
+[1] The alexx Conjecture: in base 10 rsum() of a number composed of any digit followed by one or more digit 9 -> 9
+</span>
+<br /><span style="display:none"> If you can read this, you are Shish.</span>
+</div>
+</div>
+</body>
+</html>
