@@ -132,118 +132,78 @@ border: 1px solid #00ff00;
 <script>
 window.onload = function(){
   
-    function getlength(number) {
-        return number.toString().length;
-    }
-  
-    function getRandomInt(min, max) {
-      //  return Math.floor(Math.random()*(max-min+1)+min);
-      return Math.floor(Math.random()*(max-min+1))+min;
-    }
-
-  function nrd(factor,seq){
-    
-    if ( ! factor ){ factor = 1 };
-    var int = seq || '';
-    //var col = 1;
-    var min = 1;
-    var max= 10;
-    var str = int.toString();
-    var len = str.length;
-    //console.log("factor: " + factor + " length: " + len);   
-                // (int.toString()).length) );
-    //return getRandomInt(min,max) + factor;    
-    console.log(' in fun nrd: adding a digit to ' + int);
-    while( getlength(int) < factor ){
-      
-      //min *= col;
-      //max *= col;
-      //int = ( int + ( getRandomInt(min,max -1) ) );
-      int = ( ( int * 10) + ( getRandomInt(1,9) ) );
-        console.log(' in fun nrd: checking if ' + int + ' is adding a digit to ' + int);
-      //col *= 10;
-      //str = int.toString();
-      //len = str.length;
-    }
-    /*
-    while( getlength(int) >= factor ){
-      int = int.slice(1);
-    }
-    rsum = (int + '').split('').reduce(function(previousValue, currentValue){  
-      return parseInt(previousValue,10) + parseInt(currentValue,10);  
-    });
-    */
-/*
-    var rsum = int;
-    while( getlength(rsum) > 1){
-        rsum = (rsum + '').split('').reduce(function(previousValue, currentValue){  
-          return parseInt(previousValue,10) + parseInt(currentValue,10);  
-        });
-    }
-    RS.model.rsum[0] = rsum;
-    console.log(rsum);
-*/
-    return int;
-  }
-
-  function rsum(number){
-    console.log('rsuming ' + number);
-    while( getlength(number) > 1){
-        number = (number + '').split('').reduce(function(previousValue, currentValue){  
-          return parseInt(previousValue,10) + parseInt(currentValue,10);  
-        });
-    }
-    //RS.model.rsum[0] = number;
-    return number
-  }
-
-/* NTS Migrate the above helpers into RS.model */
-
-  
-//var rsum=[];  
-//var digits = 1; // each round this goes up
-//var sequential = 1;
 var RS = {
     model: {
-            check: function(guess) { 
-               var map = {a:1,b:2,c:3,d:4,e:5,f:6,g:7,h:8,i:9}; // some numberpads send letters?
-               if( this.rsum[0] == guess || this.rsum[0] == map[guess] ){
-                    this.digits++;
-                      if(this.sequential){
-                        //console.log('last correct number was ' + RS.model.sum + ' to which we are lengthening to '  + RS.model.digits + ' digits');
-                        this.sum = nrd(this.digits,this.sum);
-                        this.rsum[0] = rsum(this.sum);
-                        console.log('next ' + this.sum + ' RS= ' + this.rsum[0]);
-                      }else{
-                        this.sum = nrd(this.digits);
-                        this.rsum[0] = rsum(this.sum);
-                        console.log('up to ' + RS.model.sum + ' RS= ' + RS.model.rsum[0]);
-                      }
-                  }else if(RS.model.digits  >=2){
-                    RS.model.digits--;
-                    console.log('sum was ' + RS.model.sum);
-                    RS.model.sum = Math.floor(RS.model.sum / 10); // remove failed digit
-                        RS.model.rsum[0] = rsum(RS.model.sum);
-                    console.log('now sum is ' + RS.model.sum);
-                        console.log('down ' + RS.model.sum + ' RS= ' + RS.model.rsum[0]);
-
-                  }else{
-                    RS.model.digits=1;
-                        //alert('Game over: ' + RS.model.scores );
-                        console.log(guess);
-                  }
-            },
-            digits: 1,
-            sequential: 1,
-            rsum: [0,0],
-            count: 0,
-            log: '',
-            sum: nrd(this.digits),
-            init: function() {
-                 this.rsum[0] = rsum(this.sum);
-                console.log(' which = ' + this.rsum[0]);
-            },
+        getlength: function (number) {
+            return number.toString().length;
         },
+        getRandomInt: function (min, max) {
+          //  return Math.floor(Math.random()*(max-min+1)+min);
+          return Math.floor(Math.random()*(max-min+1))+min;
+        },
+        nrd: function (factor,seq){
+            if ( ! factor ){ factor = 1 };
+            var int = seq || '';
+            while( this.getlength(int) < factor ){
+              int = ( ( int * 10) + ( this.getRandomInt(1,9) ) );
+            }
+            /*
+            while( getlength(int) >= factor ){
+              int = int.slice(1);
+            }
+            */
+            return int;
+        },
+        recursive_sum: function(number){
+            console.log('rsuming ' + number);
+            while( this.getlength(number) > 1){
+                number = (number + '').split('').reduce(function(previousValue, currentValue){  
+                  return parseInt(previousValue,10) + parseInt(currentValue,10);  
+                });
+            }
+            //RS.model.rsum[0] = number;
+            return number
+        },
+        check: function(guess) { 
+           var map = {a:1,b:2,c:3,d:4,e:5,f:6,g:7,h:8,i:9}; // some numberpads send letters?
+           if( this.rsum[0] == guess || this.rsum[0] == map[guess] ){
+                this.digits++;
+                  if(this.sequential){
+                    //console.log('last correct number was ' + RS.model.sum + ' to which we are lengthening to '  + RS.model.digits + ' digits');
+                    this.sum = this.nrd(this.digits,this.sum);
+                    this.rsum[0] = this.recursive_sum(this.sum);
+                    console.log('next ' + this.sum + ' RS= ' + this.rsum[0]);
+                  }else{
+                    this.sum = this.nrd(this.digits);
+                    this.rsum[0] = rsum(this.sum);
+                    console.log('up to ' + RS.model.sum + ' RS= ' + RS.model.rsum[0]);
+                  }
+              }else if(RS.model.digits  >=2){
+                RS.model.digits--;
+                console.log('sum was ' + RS.model.sum);
+                RS.model.sum = Math.floor(RS.model.sum / 10); // remove failed digit
+                    RS.model.rsum[0] = rsum(RS.model.sum);
+                console.log('now sum is ' + RS.model.sum);
+                    console.log('down ' + RS.model.sum + ' RS= ' + RS.model.rsum[0]);
+
+              }else{
+                RS.model.digits=1;
+                    //alert('Game over: ' + RS.model.scores );
+                    console.log(guess);
+              }
+        },
+        digits: 1,
+        sequential: 1,
+        rsum: [0,0],
+        count: 0,
+        log: '',
+        sum: 0,
+        init: function() {
+            this.sum = this.nrd(this.digits),
+            this.rsum[0] = this.recursive_sum(this.sum);
+            //console.log(' which = ' + this.rsum[0]);
+        },
+    },
     view: function(ctrl){ 
             return [ 
                 m('div', {'class':'floatr', 'id':'menu-button'}, [
@@ -351,54 +311,29 @@ var RS = {
     controller: function(){ 
         RS.model.init();
 
-            this.pressMyKey = function(key){
-                    if(key){
-                       var number = key.substr(0, 1); 
-                       var player = key.substr(2, 1); 
-                        RS.model.check(number);
-                        /*
-                        if(document.getElementById('one_player').checked) {
-                            alert('Player ONE ' + player + ' clicked ' + number);
-                        }else if(document.getElementById('two_players').checked) {
-                            alert('Player ' + player + ' clicked ' + number);
-                        }else{
-                            alert('Three\'s a crowd dude!');
-                        }
-                        */
-                    }
+        this.pressMyKey = function(key){
+            if(key){
+               var number = key.substr(0, 1); 
+               var player = key.substr(2, 1); 
+                RS.model.check(number);
+                /*
+                if(document.getElementById('one_player').checked) {
+                    alert('Player ONE ' + player + ' clicked ' + number);
+                }else if(document.getElementById('two_players').checked) {
+                    alert('Player ' + player + ' clicked ' + number);
+                }else{
+                    alert('Three\'s a crowd dude!');
+                }
+                */
             }
+        }
     }
 };
-/*
-  playerKeys: function() {
-    p1:{48:0, 49:1, 50:2, 51:3;  52:4,  53:5,  54:6,  55:7,  56:8,  57:9};
-    p2:{96:0, 97:1, 98:2, 99:3; 100:4, 101:5, 102:6, 103:7, 104:8, 105:9};
-  };
-  */
-  
-  // we need to collect the keystrokes for the player(s)
-  // and error them (and reset) if they make a mistake
-
-
 window.addEventListener('keydown', function(e){
-  
-    if( ( e.keyCode >= 48 &&e.keyCode<= 57) || ( e.keyCode >= 96 && e.keyCode<= 105) )
-    {
-      RS.model.count++;
-      //var map = {a:1,b:2,c:3,d:4,e:5,f:6,g:7,h:8,i:9};
-      
-      //p1g = String.fromCharCode((96 <= key && key <= 105) ? key-48 : key);
-      guess = String.fromCharCode(e.keyCode);
-      //if( isNaN(guess)){
-      //  RS.model.check(map[guess]);
-      //}else{
+    if( ( e.keyCode >= 48 &&e.keyCode<= 57) || ( e.keyCode >= 96 && e.keyCode<= 105) ) {
+        guess = String.fromCharCode(e.keyCode);
         RS.model.check(guess);
-      //}
-      //RS.model.log = e.keyCode;
-      m.redraw();
-    //}else{
-    //  RS.model.log = e.keyCode;
-    //  m.redraw();
+        m.redraw();
     }
 });
 
