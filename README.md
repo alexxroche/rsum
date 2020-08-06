@@ -1,4 +1,7 @@
-## A simple game where you have to recursively sum the digits ##
+## A simple game where you have to recursively sum the digits
+
+[What](#readme) | [Dependencies](#dependencies) | [Also See](#number-theory)
+
 
 https://alexxroche.github.io/rsum 
 
@@ -20,6 +23,7 @@ e.g.  56 => 2  [5+6 = 11; 1+1 = 2]
 ### Dependencies ###
 
 ECMAscript
+
 https://lhorie.github.io/mithril-blog/ https://mithril.js.org/
 
 ### Number theory ###
