@@ -1,4 +1,4 @@
-= A simple game where you have to recursively sum the digits =
+## A simple game where you have to recursively sum the digits ##
 
 https://alexxroche.github.io/rsum 
 
@@ -17,10 +17,10 @@ e.g.  56 => 2  [5+6 = 11; 1+1 = 2]
 100% Javascript. Keeps a record of your best scores. Has guest mode so that others can play. Has "vs mode" so that one can use the keypad and another the number keys in a head-to-head race.      
 
 
-== Dependencies ==
+### Dependencies ###
 
 ECMAscript
 https://lhorie.github.io/mithril-blog/ https://mithril.js.org/
 
-== Number theory ==
+### Number theory ###
 This comes from the area of mathematics known as Digital Roots, and can be useful for predicting divisibility of a number.
